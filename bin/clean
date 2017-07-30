@@ -1,0 +1,18 @@
+#!/usr/bin/env coffee
+
+require 'shelljs/global'
+readlineSync = require 'readline-sync'
+
+response = readlineSync.question """
+Warning! This will:
+- nuke all changes to www/config.js, www/index.html, and config.xml
+- nuke all changes to submodules (vendor/*)
+- delete plugins, platforms, and ul_web_hooks directories
+Proceed? [y/N] """
+
+if response is 'y'
+  exec "git checkout www/config.js www/index.html config.xml"
+  exec "git submodule update --recursive --force"
+  rm '-rf', 'plugins'
+  rm '-rf', 'platforms'
+  rm '-rf', 'ul_web_hooks'

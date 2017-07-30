@@ -1,0 +1,197 @@
+#!/usr/bin/env coffee
+
+require 'shelljs/global'
+commandLineArgs = require 'command-line-args'
+commandLineUsage = require 'command-line-usage'
+_ = require 'lodash'
+
+# command line options
+optionList = [
+  {
+    name: 'appId'
+    type: String
+    description: "App ID / bundle name. Defaults to env-specific ID, eg 'us.gratzi.pegg.staging'."
+  }
+  {
+    name: 'appName'
+    type: String
+    description: "App name displayed to user. Defaults to env-specified name, eg 'Pegg [staging]'."
+  }
+  {
+    name: 'appUrl'
+    alias: 'u'
+    type: String
+    description: "URL to use for app. Required with --nodeEnv=dev. Defaults to env-specific pegg.us urls."
+  }
+  {
+    name: 'force'
+    alias: 'f'
+    type: Boolean
+    description: "Ignore uncommited git changes"
+  }
+  {
+    name: 'help'
+    alias: 'h'
+    type: Boolean
+    description: "Show this help message"
+  }
+  {
+    name: 'nodeEnv'
+    alias: 'e'
+    type: String
+    description: "The node environment. Same as NODE_ENV. [production|staging|dev]"
+    env: 'NODE_ENV'
+  }
+  {
+    name: 'parseUrl'
+    type: String
+    description: "URL to use for parse server. Defaults to env-specific heroku server (dev defaults to staging heroku server)."
+  }
+  {
+    name: 'platform'
+    alias: 'p'
+    type: String
+    description: "The platform for phonegap to build. Same as PLATFORM. [android|ios]"
+    env: 'PLATFORM'
+  }
+]
+# command line usage description
+usage = commandLineUsage [
+  {
+    header: 'Pegg Phonegap Deploy'
+    content: "Builds and deploys the Pegg app for various platforms and environments. Increments the version number."
+  }
+  {
+    header: 'Examples'
+    content: """
+      deploy -e production -p android
+      deploy -e staging -p ios
+      deploy -e dev -p android -f --appUrl 'http://192.168.1.165:8080'
+    """
+  }
+  {
+    header: 'Options'
+    optionList: optionList
+  }
+]
+
+# the primary functionality of the app
+main = ->
+  ##########################################
+  # BUILD PHONEGAP PACKAGES FOR DEPLOYMENT #
+  ##########################################
+
+  # - barf unless NODE_ENV specified
+  unless options.nodeEnv
+    barf "Please specify NODE_ENV or -e (eg. 'staging' or 'production')"
+
+  # - barf unless PLATFORM specified
+  unless options.platform
+    barf "Please specify PLATFORM or -p (eg. 'android' or 'ios')"
+
+  # - barf if uncommitted changes
+  unless exec("git diff-index --quiet HEAD --").code is 0 or options.force
+    barf "Uncommitted git changes... commit or stash plz"
+
+  # - set defaults for env specific vars
+  switch options.nodeEnv
+    when 'dev'
+      unless options.appUrl
+        barf "--appUrl required with --nodeEnv=dev"
+      options.parseUrl    ?= 'https://pegg-staging.herokuapp.com'
+      options.firebaseUrl ?= 'https://pegg-staging.firebaseio.com'
+      options.appId       ?= 'us.gratzi.pegg.dev'
+      options.appName     ?= 'Pegg [dev]'
+    when 'staging'
+      options.appUrl      ?= 'http://staging.pegg.us'
+      options.parseUrl    ?= 'https://pegg-staging.herokuapp.com'
+      options.firebaseUrl ?= 'https://pegg-staging.firebaseio.com'
+      options.appId       ?= 'us.gratzi.pegg.staging'
+      options.appName     ?= 'Pegg [staging]'
+    when 'production'
+      options.appUrl      ?= 'http://live.pegg.us'
+      options.parseUrl    ?= 'https://pegg.herokuapp.com'
+      options.firebaseUrl ?= 'https://pegg-live.firebaseio.com'
+      options.appId       ?= 'us.gratzi.pegg'
+      options.appName     ?= 'Pegg'
+
+  # set vars in in config files
+  sed '-i', 'NODE_ENV',             options.nodeEnv,      'www/config.js'
+  sed '-i', 'APP_ROOT_URL',         options.appUrl,       'www/config.js'
+  sed '-i', 'FIREBASE_ROOT_URL',    options.firebaseUrl,  'www/config.js'
+  sed '-i', 'APP_ROOT_URL',         options.appUrl,       'www/index.html'
+  sed '-i', 'PARSE_ROOT_URL',       options.parseUrl,     'www/index.html'
+  sed '-i', 'PHONEGAP_APP_ID',      options.appId,        'config.xml'
+  sed '-i', 'PHONEGAP_APP_NAME',    options.appName,      'config.xml'
+
+  unless (test '-d', 'platforms') or (test '-d', 'plugins')
+    # => add platform
+    run "phonegap platform add #{options.platform}"
+
+    # We're using git submodules to preserve local checkouts of our modules. To add a new plugin to the project, use:
+    #
+    #     git submodule add <repo> vendor/<phonegap-plugin-name>
+    #
+    # and then add a line below to instruct phonegap to use the plugin.
+    #
+    # First we need to make sure our submodules are up to date.
+    run "git submodule update --init --recursive"
+
+    # => customize social sharing plugin
+    sed '-i', 'com.socialsharing.provider', options.appId,  'vendor/cordova-plugin-x-socialsharing/plugin.xml'
+    sed '-i', 'com.socialsharing.provider', options.appId,  'vendor/cordova-plugin-x-socialsharing/src/android/nl/xservices/plugins/SocialSharing.java'
+
+    # => add plugins to phonegap project
+    run "phonegap plugin add vendor/cordova-plugin-facebook4 --variable APP_ID='1410524409215955' --variable APP_NAME='Pegg'"
+    run "phonegap plugin add vendor/cordova-plugin-whitelist"
+    run "phonegap plugin add vendor/cordova-plugin-compat"
+    run "phonegap plugin add vendor/phonegap-plugin-push --variable SENDER_ID='1079851742012'"
+#    run "phonegap plugin add vendor/cordova-universal-links-plugin"
+    run "phonegap plugin add vendor/ionic-plugin-keyboard"
+    run "phonegap plugin add vendor/cordova-custom-config"
+    run "phonegap plugin add vendor/cordova-plugin-x-socialsharing"
+    run "phonegap plugin add vendor/cordova-plugin-statusbar"
+    run "phonegap plugin add vendor/cordova-ionic-phonegap-branch-deep-linking --variable BRANCH_KEY=key_live_naFo0q66C6OpxZREh5fZ5emlqDhMIWR5 --variable URI_SCHEME=branchcordova;"
+    switch options.platform
+      when 'ios'
+        run "phonegap plugin add vendor/cordova-plugin-wkwebview-engine"
+      when 'android'
+#        run "phonegap plugin add vendor/cordova-plugin-navigationbar"
+        run "phonegap plugin add vendor/phonegap-orientationlock"
+        run "phonegap plugin add vendor/cordova-plugin-crosswalk-webview"
+
+  # => increment app version number
+  # => run phonegap build for desired platform
+  # => for iOS, build and sign deployment archive
+  # => commit built files and incremented version number (wherever that lives)
+  # => tag commit with version number
+
+# run an external command, and exit on failure
+run = (cmd, options = {}) ->
+  continueOnFailure = options.continueOnFailure ? false
+  echo "==> #{cmd}"
+  code = (exec cmd).code
+  if code isnt 0
+    echo 'COMMAND FAILED'
+    exit(code) unless continueOnFailure
+  code
+
+# exit with message
+barf = (msg) ->
+  echo msg
+  exit 1
+
+# load options
+try
+  options = commandLineArgs optionList
+catch err
+  barf err.message
+# merge in env variables
+for option in optionList
+  if env[option.env]?
+    options[option.name] ?= env[option.env]
+# execute app
+if options?.help or _.isEmpty options
+  echo usage
+else
+  main()

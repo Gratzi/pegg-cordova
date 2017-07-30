@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pegg</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta property="og:url" content="http://www.pegg.us">
+    <meta property="og:image" content="http://www.pegg.us/images/pegg-hero-shot.jpg">
+    <meta property="og:type" content="article">
+    <meta property="fb:app_id" content="1410524409215955">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src
+          http://live.pegg.us
+          http://pegg.herokuapp.com
+          http://pegg-staging.herokuapp.com
+          https://www.pegg.us
+          http://www.pegg.us
+          wss://*.firebaseio.com
+          https://*.firebaseio.com
+          https://pegg.herokuapp.com
+          https://graph.facebook.com
+          http://*.facebook.com
+          https://*.facebook.com
+          https://*.fbcdn.net
+          http://api.mixpanel.com
+          http://live.pegg.us
+          https://live.pegg.us
+          https://www.google-analytics.com
+          http://*.giphy.com
+          https://*.giphy.com
+          'self'
+          gap://ready
+          ;
+        style-src
+          http://live.pegg.us
+          'self'
+          'unsafe-inline'
+          ;
+        img-src
+          http://live.pegg.us
+          http://live.pegg.us
+          http://pegg.herokuapp.com
+          http://pegg-staging.herokuapp.com
+          https://www.google-analytics.com
+          http://*.giphy.com
+          https://*.giphy.com
+          https://*.facebook.com
+          https://*.fbcdn.net
+          'self'
+          blob:
+          ;
+        media-src
+          http://i.imgur.com
+          ;
+        script-src
+          http://live.pegg.us
+          http://pegg.herokuapp.com
+          http://pegg-staging.herokuapp.com
+          https://www.google-analytics.com/analytics.js
+          http://connect.facebook.net/en_US/sdk.js
+          https://graph.facebook.com
+          https://*.firebaseio.com
+          http://*.polyfill.io
+          https://*.polyfill.io
+          'self'
+          'unsafe-inline'
+          'unsafe-eval';
+      ">
+    <link rel="icon" href="images/PeggIcon.png">
+    <link rel="apple-touch-icon" href="images/PeggIcon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/PeggIcon-76pt.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/PeggIcon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/PeggIcon-152pt.png">
+    <link rel="stylesheet" href="mobile.css">
+  </head>
+  <body style="background-color: #0c0d2a;">
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="plugins/cordova-plugin-facebook4/www/facebook-native.js"></script>
+    <script defer type="text/javascript" src="config.js"></script>
+  </body>
+</html>
