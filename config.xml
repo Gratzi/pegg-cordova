@@ -1,27 +1,103 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloCordova</name>
+<widget id="PHONEGAP_APP_ID" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PHONEGAP_APP_NAME</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Who's got you pegged?
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="team@pegg.us" href="https://www.pegg.us">
+        Pegg Team
     </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
+    <access origin="https://www.google-analytics.com" />
+    <allow-navigation href="*" />
+    <preference name="BackgroundColor" value="0x000439" />
+    <branch-config>
+        <ios-team-id value="QQ8HYNS4DQ"/>
+        <host name="pegg.app.link" scheme="https" />
+    </branch-config>
+    <preference name="AndroidLaunchMode" value="singleTask" />
     <platform name="android">
-        <allow-intent href="market:*" />
+        <content src="index.html" />
+        <preference name="AndroidLaunchMode" value="singleTask" />
+        <preference name="xwalkVersion" value="xwalk_core_library_beta:23.53.589.4" />
+        <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
+        <!-- <preference name="xwalkMode" value="lite" /> -->
+        <!-- <preference name="xwalkLiteVersion" value="17+" /> -->
+        <preference name="xwalkMultipleApk" value="true" />
+        <icon density="ldpi" src="res/icons/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icons/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icons/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icons/android/icon-96-xhdpi.png" />
+        <icon density="xxhdpi" src="res/icons/android/icon-144-xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icons/android/icon-192-xxxhdpi.png" />
     </platform>
     <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
+        <engine name="ios" spec="~4.1.1" />
+        <feature name="CDVWKWebViewEngine">
+            <param name="ios-package" value="CDVWKWebViewEngine" />
+        </feature>
+        <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+        <preference name="AllowInlineMediaPlayback" value="true" />
+        <icon height="40" src="res/icons/ios/icon-20-2x.png" width="40" />
+        <icon height="60" src="res/icons/ios/icon-20-3x.png" width="60" />
+        <icon height="29" src="res/icons/ios/icon-small.png" width="29" />
+        <icon height="58" src="res/icons/ios/icon-small-2x.png" width="58" />
+        <icon height="87" src="res/icons/ios/icon-small-3x.png" width="87" />
+        <icon height="40" src="res/icons/ios/icon-40.png" width="40" />
+        <icon height="80" src="res/icons/ios/icon-40-2x.png" width="80" />
+        <icon height="120" src="res/icons/ios/icon-40-3x.png" width="120" />
+        <icon height="50" src="res/icons/ios/icon-50.png" width="50" />
+        <icon height="100" src="res/icons/ios/icon-50-2x.png" width="100" />
+        <icon height="57" src="res/icons/ios/icon-57.png" width="57" />
+        <icon height="114" src="res/icons/ios/icon-57-2x.png" width="114" />
+        <icon height="60" src="res/icons/ios/icon-60.png" width="60" />
+        <icon height="120" src="res/icons/ios/icon-60-2x.png" width="120" />
+        <icon height="180" src="res/icons/ios/icon-60-3x.png" width="180" />
+        <icon height="72" src="res/icons/ios/icon-72.png" width="72" />
+        <icon height="144" src="res/icons/ios/icon-72-2x.png" width="144" />
+        <icon height="76" src="res/icons/ios/icon-76.png" width="76" />
+        <icon height="152" src="res/icons/ios/icon-76-2x.png" width="152" />
+        <icon height="1024" src="res/icons/ios/icon-1024.png" width="1024" />
+        <icon height="1024" src="res/icons/ios/icon-1024-2x.png" width="2048" />
+        <icon height="167" src="res/icons/ios/icon-83.5-2x.png" width="167" />
+        <config-file parent="UIStatusBarHidden" platform="ios" target="*-Info.plist">
+            <true />
+        </config-file>
+        <config-file parent="UIViewControllerBasedStatusBarAppearance" platform="ios" target="*-Info.plist">
+            <false />
+        </config-file>
+        <config-file platform="ios" target="*-Info.plist" parent="UISupportedInterfaceOrientations" mode="replace" >
+            <array>
+                <string>UIInterfaceOrientationPortrait</string>
+            </array>
+        </config-file>
     </platform>
-    <engine name="android" spec="^6.2.3" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
+    <preference name="SplashScreen" value="screen" />
+    <platform name="android">
+        <splash density="land-hdpi" src="res/screens/android/screen-hdpi-landscape.png" />
+        <splash density="land-ldpi" src="res/screens/android/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi" src="res/screens/android/screen-mdpi-landscape.png" />
+        <splash density="land-xhdpi" src="res/screens/android/screen-xhdpi-landscape.png" />
+        <splash density="land-xxhdpi" src="res/screens/android/screen-xxhdpi-landscape.png" />
+        <splash density="land-xxxhdpi" src="res/screens/android/screen-xxxhdpi-landscape.png" />
+        <splash density="port-hdpi" src="res/screens/android/screen-hdpi-portrait.png" />
+        <splash density="port-ldpi" src="res/screens/android/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />
+        <splash density="port-xxhdpi" src="res/screens/android/screen-xxhdpi-portrait.png" />
+        <splash density="port-xxxhdpi" src="res/screens/android/screen-xxxhdpi-portrait.png" />
+    </platform>
+    <platform name="ios">
+        <splash width="640" height="1136" src="res/screens/ios/screen-iphone-568h-2x.png" />
+        <splash width="320" height="480" src="res/screens/ios/screen-iphone-portrait.png" />
+        <splash width="640" height="960" src="res/screens/ios/screen-iphone-portrait-2x.png" />
+        <splash width="750" height="1334" src="res/screens/ios/screen-iphone-portrait-667h.png" />
+        <splash width="1242" height="2208" src="res/screens/ios/screen-iphone-portrait-736h.png" />
+        <splash width="2208" height="1242" src="res/screens/ios/screen-iphone-landscape-736h.png" />
+        <splash width="768" height="1024" src="res/screens/ios/screen-ipad-portrait.png" />
+        <splash width="1536" height="2048" src="res/screens/ios/screen-ipad-portrait-2x.png" />
+        <splash width="1024" height="768" src="res/screens/ios/screen-ipad-landscape.png" />
+        <splash width="2048" height="1536" src="res/screens/ios/screen-ipad-landscape-2x.png" />
+        <splash width="2732" height="2048" src="res/screens/ios/screen-ipad-landscape-ipadpro.png" />
+        <splash width="2048" height="2732" src="res/screens/ios/screen-ipad-portrait-ipadpro.png" />
+    </platform>
 </widget>
