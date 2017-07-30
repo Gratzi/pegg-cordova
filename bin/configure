@@ -51,14 +51,14 @@ optionList = [
     name: 'platform'
     alias: 'p'
     type: String
-    description: "The platform for phonegap to build. Same as PLATFORM. [android|ios]"
+    description: "The platform for cordova to build. Same as PLATFORM. [android|ios]"
     env: 'PLATFORM'
   }
 ]
 # command line usage description
 usage = commandLineUsage [
   {
-    header: 'Pegg Phonegap Deploy'
+    header: 'Pegg Cordova Deploy'
     content: "Builds and deploys the Pegg app for various platforms and environments. Increments the version number."
   }
   {
@@ -78,7 +78,7 @@ usage = commandLineUsage [
 # the primary functionality of the app
 main = ->
   ##########################################
-  # BUILD PHONEGAP PACKAGES FOR DEPLOYMENT #
+  # BUILD cordova PACKAGES FOR DEPLOYMENT #
   ##########################################
 
   # - barf unless NODE_ENV specified
@@ -126,13 +126,13 @@ main = ->
 
   unless (test '-d', 'platforms') or (test '-d', 'plugins')
     # => add platform
-    run "phonegap platform add #{options.platform}"
+    run "cordova platform add #{options.platform}"
 
     # We're using git submodules to preserve local checkouts of our modules. To add a new plugin to the project, use:
     #
-    #     git submodule add <repo> vendor/<phonegap-plugin-name>
+    #     git submodule add <repo> vendor/<cordova-plugin-name>
     #
-    # and then add a line below to instruct phonegap to use the plugin.
+    # and then add a line below to instruct cordova to use the plugin.
     #
     # First we need to make sure our submodules are up to date.
     run "git submodule update --init --recursive"
@@ -141,27 +141,27 @@ main = ->
     sed '-i', 'com.socialsharing.provider', options.appId,  'vendor/cordova-plugin-x-socialsharing/plugin.xml'
     sed '-i', 'com.socialsharing.provider', options.appId,  'vendor/cordova-plugin-x-socialsharing/src/android/nl/xservices/plugins/SocialSharing.java'
 
-    # => add plugins to phonegap project
-    run "phonegap plugin add vendor/cordova-plugin-facebook4 --variable APP_ID='1410524409215955' --variable APP_NAME='Pegg'"
-    run "phonegap plugin add vendor/cordova-plugin-whitelist"
-    run "phonegap plugin add vendor/cordova-plugin-compat"
-    run "phonegap plugin add vendor/phonegap-plugin-push --variable SENDER_ID='1079851742012'"
-#    run "phonegap plugin add vendor/cordova-universal-links-plugin"
-    run "phonegap plugin add vendor/ionic-plugin-keyboard"
-    run "phonegap plugin add vendor/cordova-custom-config"
-    run "phonegap plugin add vendor/cordova-plugin-x-socialsharing"
-    run "phonegap plugin add vendor/cordova-plugin-statusbar"
-    run "phonegap plugin add vendor/cordova-ionic-phonegap-branch-deep-linking --variable BRANCH_KEY=key_live_naFo0q66C6OpxZREh5fZ5emlqDhMIWR5 --variable URI_SCHEME=branchcordova;"
+    # => add plugins to cordova project
+    run "cordova plugin add vendor/cordova-plugin-facebook4 --variable APP_ID='1410524409215955' --variable APP_NAME='Pegg'"
+    run "cordova plugin add vendor/cordova-plugin-whitelist"
+    run "cordova plugin add vendor/cordova-plugin-compat"
+    run "cordova plugin add vendor/phonegap-plugin-push --variable SENDER_ID='1079851742012'"
+#    run "cordova plugin add vendor/cordova-universal-links-plugin"
+    run "cordova plugin add vendor/ionic-plugin-keyboard"
+    run "cordova plugin add vendor/cordova-custom-config"
+    run "cordova plugin add vendor/cordova-plugin-x-socialsharing"
+    run "cordova plugin add vendor/cordova-plugin-statusbar"
+    run "cordova plugin add vendor/cordova-ionic-phonegap-branch-deep-linking --variable BRANCH_KEY=key_live_naFo0q66C6OpxZREh5fZ5emlqDhMIWR5 --variable URI_SCHEME=branchcordova;"
     switch options.platform
       when 'ios'
-        run "phonegap plugin add vendor/cordova-plugin-wkwebview-engine"
+        run "cordova plugin add vendor/cordova-plugin-wkwebview-engine"
       when 'android'
-#        run "phonegap plugin add vendor/cordova-plugin-navigationbar"
-        run "phonegap plugin add vendor/phonegap-orientationlock"
-        run "phonegap plugin add vendor/cordova-plugin-crosswalk-webview"
+#        run "cordova plugin add vendor/cordova-plugin-navigationbar"
+        run "cordova plugin add vendor/phonegap-orientationlock"
+        run "cordova plugin add vendor/cordova-plugin-crosswalk-webview"
 
   # => increment app version number
-  # => run phonegap build for desired platform
+  # => run cordova build for desired platform
   # => for iOS, build and sign deployment archive
   # => commit built files and incremented version number (wherever that lives)
   # => tag commit with version number
