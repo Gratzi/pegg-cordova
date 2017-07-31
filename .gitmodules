@@ -1,0 +1,3 @@
+[submodule "vendor/cordova-custom-config"]
+	path = vendor/cordova-custom-config
+	url = https://github.com/dpa99c/cordova-custom-config.git
