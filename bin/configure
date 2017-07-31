@@ -157,7 +157,7 @@ main = ->
         run "cordova plugin add vendor/cordova-plugin-wkwebview-engine"
       when 'android'
 #        run "cordova plugin add vendor/cordova-plugin-navigationbar"
-        run "cordova plugin add vendor/phonegap-orientationlock"
+        # run "cordova plugin add vendor/phonegap-orientationlock"
         run "cordova plugin add vendor/cordova-plugin-crosswalk-webview"
 
   # => increment app version number
