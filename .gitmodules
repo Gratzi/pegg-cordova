@@ -1,3 +1,6 @@
 [submodule "vendor/cordova-custom-config"]
 	path = vendor/cordova-custom-config
 	url = https://github.com/dpa99c/cordova-custom-config.git
+[submodule "vendor/cordova-ionic-phonegap-branch-deep-linking"]
+	path = vendor/cordova-ionic-phonegap-branch-deep-linking
+	url = https://github.com/BranchMetrics/cordova-ionic-phonegap-branch-deep-linking.git
