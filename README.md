@@ -1,4 +1,4 @@
-# Pegg PhoneGap App
+# Pegg Cordova App
 
 ## Usage
 
@@ -10,12 +10,12 @@ git reset HEAD
 git co .
 nvm use v5.10.1
 bin/configure -e production -p ios
-phonegap build ios
+cordova build ios
 ```
 
 ### Install on device Android
 ```
-phonegap install android --device --verbose
+cordova install android --device --verbose
 ```
 
 ### Production build XCode settings
@@ -38,6 +38,6 @@ Signing -> Code Signing Identities -> iOS Developer
 # Plugin Submodules
 We're using git submodules to preserve local checkouts of our modules. To add a new plugin to the project, use:
 
-    git submodule add <repo> vendor/<phonegap-plugin-name>
+    git submodule add <repo> vendor/<cordova-plugin-name>
 
-and then add a line to the `configure` script to instruct phonegap to use the plugin.
+and then add a line to the `configure` script to instruct cordova to use the plugin.
