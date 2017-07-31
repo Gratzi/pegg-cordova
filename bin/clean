@@ -11,7 +11,7 @@ Warning! This will:
 Proceed? [y/N] """
 
 if response is 'y'
-  exec "git checkout www/config.js www/index.html config.xml"
+  exec "git checkout www/config.js www/index.html config.xml package.json package-lock.json"
   exec "git submodule update --recursive --force"
   rm '-rf', 'plugins'
   rm '-rf', 'platforms'
